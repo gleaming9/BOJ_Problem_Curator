@@ -1,0 +1,1 @@
+rootProject.name = "BOJ_Problem_Curator"
