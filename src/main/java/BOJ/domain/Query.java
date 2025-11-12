@@ -17,7 +17,7 @@ public class Query {
         if(tag != null && !tag.isBlank()) {
             String[] tags = tag.split(",");
             for (String tagValue : tags) {
-                queryBuilder.append("tag:").append(tag).append(" ");
+                queryBuilder.append("tag:").append(tagValue).append(" ");
             }
         }
         if(!(minimumTier.isBlank() && maximumTier.isBlank())) {
