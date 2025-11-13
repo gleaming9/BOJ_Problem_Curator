@@ -24,13 +24,19 @@ public class Query {
         for (String tagValue : tags) {
             queryBuilder.append("tag:").append(tagValue).append(" ");
         }
-        if (!(minimumTier.isBlank() && maximumTier.isBlank())) {
-            queryBuilder.append("*").append(minimumTier).append("..").append(maximumTier).append(" ");
+
+        if (!(minimumTier == null && maximumTier == null)) {
+            queryBuilder.append("*");
+            if(minimumTier != null) queryBuilder.append(minimumTier);
+            queryBuilder.append("..");
+            if(maximumTier != null) queryBuilder.append(maximumTier);
+            queryBuilder.append(" ");
         }
+
         if (solvedCount != null) {
             queryBuilder.append("s#").append(solvedCount).append(".. ");
         }
-        if (isKorean != null) {
+        if (isKorean == 1) {
             queryBuilder.append("%ko");
         }
         return queryBuilder.toString();
@@ -42,13 +48,16 @@ public class Query {
     }
 
     private void validateTier() {
-        if (!minimumTier.matches(TIER_FORMAT_REGEX)) {
+        if (minimumTier != null && !minimumTier.matches(TIER_FORMAT_REGEX)) {
+            throw new IllegalArgumentException(ErrorMessage.INVALID_TIER_NAME.getMessage());
+        }
+        if(maximumTier != null && !maximumTier.matches(TIER_FORMAT_REGEX)){
             throw new IllegalArgumentException(ErrorMessage.INVALID_TIER_NAME.getMessage());
         }
     }
 
     private String[] parseAndValidateTags() {
-        if (tag == null || tag.isBlank()) return null;
+        if (tag == null || tag.isBlank()) return new String[0];
 
         String[] tags = tag.split(BASE_DELIMITER);
         for (String tagValue : tags) {
