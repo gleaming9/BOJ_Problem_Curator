@@ -8,6 +8,7 @@ public class InputView {
     private static final String MAXIMUM_TIER_MESSAGE = "최대 난이도 입력 : ";
     private static final String SOLVED_COUNT_MESSAGE = "최소 푼 사람 수 (예: 1000) : ";
     private static final String KOREAN_MESSAGE = "한국어 문제만 볼 건지 여부 (예: 0, 1) : ";
+    private static final String PROBLEM_COUNT_MESSAGE = "원하는 문제 개수 : ";
 
     private static final Scanner sc = new Scanner(System.in);
 
@@ -33,6 +34,11 @@ public class InputView {
 
     public static int getKorean(){
         System.out.println(KOREAN_MESSAGE);
+        return sc.nextInt();
+    }
+
+    public static int getProblemCount(){
+        System.out.println(PROBLEM_COUNT_MESSAGE);
         return sc.nextInt();
     }
 }
