@@ -9,13 +9,15 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ProblemService {
 
     private static final SolvedAcClient solvedAcClient = new HttpSolvedAcClient();
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
-    public List<Problem> search(String tag, String minTier, String maxTier, int solvedCount, int isKorean){
+    public List<Problem> search(String tag, String minTier,
+                                String maxTier, int solvedCount, int isKorean, int problemCount){
         Query query = Query.builder()
                 .tag(tag)
                 .minimumTier(minTier)
@@ -26,8 +28,11 @@ public class ProblemService {
 
         String queryString = query.toQueryString();
         String jsonResponse = solvedAcClient.searchProblem(queryString);
+        List<Problem> allProblems = parseResponse(jsonResponse);
 
-        return parseResponse(jsonResponse);
+        return allProblems.stream()
+                .limit(problemCount)
+                .collect(Collectors.toList());
     }
 
     private List<Problem> parseResponse(String json){
