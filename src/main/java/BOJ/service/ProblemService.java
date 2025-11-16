@@ -1,20 +1,28 @@
 package BOJ.service;
 
-import BOJ.client.HttpSolvedAcClient;
 import BOJ.domain.Problem;
 import BOJ.domain.Query;
 import BOJ.domain.SolvedAcResponse;
 import BOJ.exception.ErrorMessage;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Service
 public class ProblemService {
 
-    private static final SolvedAcClient solvedAcClient = new HttpSolvedAcClient();
-    private static final ObjectMapper objectMapper = new ObjectMapper();
+    private final SolvedAcClient solvedAcClient;
+    private final ObjectMapper objectMapper;
+
+    @Autowired
+    ProblemService(SolvedAcClient solvedAcClient) {
+        this.solvedAcClient = solvedAcClient;
+        this.objectMapper = new ObjectMapper();
+    }
 
     public List<Problem> search(String tag, String minTier,
                                 String maxTier, int solvedCount, int isKorean, int problemCount){

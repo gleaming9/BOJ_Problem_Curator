@@ -1,10 +1,11 @@
 package BOJ;
 
-import BOJ.controller.ProblemController;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+@SpringBootApplication
 public class Application {
     public static void main(String[] args) {
-        ProblemController problemController = new ProblemController();
-        problemController.run();
+        SpringApplication.run(Application.class, args);
     }
 }

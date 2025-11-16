@@ -2,6 +2,7 @@ package BOJ.client;
 
 import BOJ.exception.ErrorMessage;
 import BOJ.service.SolvedAcClient;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.net.URI;
@@ -11,6 +12,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 
+@Component
 public class HttpSolvedAcClient implements SolvedAcClient {
 
     private static final String BASE_URL = "https://solved.ac/api/v3/search/problem";
