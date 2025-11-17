@@ -1,6 +1,7 @@
 package BOJ.controller;
 
 import BOJ.domain.Problem;
+import BOJ.dto.SearchRequest;
 import BOJ.service.ProblemService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -17,14 +18,7 @@ public class ProblemController {
     }
 
     @GetMapping("api/search")
-    public List<Problem> searchProblems(
-            @RequestParam(required = false) String tag,
-            @RequestParam(required = false) String minTier,
-            @RequestParam(required = false) String maxTier,
-            @RequestParam(required = false) Integer solvedCount,
-            @RequestParam(required = false) Integer isKorean,
-            @RequestParam(defaultValue = "1") int count
-    ){
-        return problemService.search(tag, minTier, maxTier, solvedCount, isKorean, count);
+    public List<Problem> searchProblems(SearchRequest request){
+        return problemService.search(request);
     }
 }

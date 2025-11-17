@@ -3,6 +3,7 @@ package BOJ.service;
 import BOJ.domain.Problem;
 import BOJ.domain.Query;
 import BOJ.domain.SolvedAcResponse;
+import BOJ.dto.SearchRequest;
 import BOJ.exception.ErrorMessage;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -24,23 +25,26 @@ public class ProblemService {
         this.objectMapper = new ObjectMapper();
     }
 
-    public List<Problem> search(String tag, String minTier,
-                                String maxTier, int solvedCount, int isKorean, int problemCount){
-        Query query = Query.builder()
-                .tag(tag)
-                .minimumTier(minTier)
-                .maximumTier(maxTier)
-                .solvedCount(solvedCount)
-                .isKorean(isKorean)
-                .build();
+    public List<Problem> search(SearchRequest request){
+        Query query = createQuery(request);
 
         String queryString = query.toQueryString();
         String jsonResponse = solvedAcClient.searchProblem(queryString);
         List<Problem> allProblems = parseResponse(jsonResponse);
 
         return allProblems.stream()
-                .limit(problemCount)
+                .limit(request.getCount())
                 .collect(Collectors.toList());
+    }
+
+    private Query createQuery(SearchRequest request){
+        return Query.builder()
+                .tag(request.getTag())
+                .minimumTier(request.getMinTier())
+                .maximumTier(request.getMaxTier())
+                .solvedCount(request.getSolvedCount())
+                .isKorean(request.getIsKorean())
+                .build();
     }
 
     private List<Problem> parseResponse(String json){
