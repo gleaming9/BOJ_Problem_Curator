@@ -10,7 +10,9 @@ public enum ErrorMessage {
     API_CONNECTION_ERROR("Solved.ac API 통신 중 오류가 발생했습니다."),
     API_REQUEST_FAILED("API 요청에 실패했습니다. 상태 코드 : "),
 
-    JSON_PARSING_FAILED("API 응답 데이터를 분석하는 데 실패했습니다.");
+    JSON_PARSING_FAILED("API 응답 데이터를 분석하는 데 실패했습니다."),
+
+    UNKNOWN_ERROR("알 수 없는 오류가 발생했습니다. 관리자에게 문의하세요.");
 
     private final String message;
 

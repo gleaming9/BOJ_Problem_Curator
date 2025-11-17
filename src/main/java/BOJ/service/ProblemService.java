@@ -4,6 +4,7 @@ import BOJ.domain.Problem;
 import BOJ.domain.Query;
 import BOJ.domain.SolvedAcResponse;
 import BOJ.dto.SearchRequest;
+import BOJ.exception.CustomRuntimeException;
 import BOJ.exception.ErrorMessage;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -53,7 +54,7 @@ public class ProblemService {
             return response.getItems();
         }
         catch(JsonProcessingException e){
-            throw new RuntimeException(ErrorMessage.JSON_PARSING_FAILED.getMessage(), e);
+            throw new CustomRuntimeException(ErrorMessage.JSON_PARSING_FAILED, e);
         }
     }
 }

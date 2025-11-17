@@ -1,5 +1,6 @@
 package BOJ.client;
 
+import BOJ.exception.CustomRuntimeException;
 import BOJ.exception.ErrorMessage;
 import BOJ.service.SolvedAcClient;
 import org.springframework.stereotype.Component;
@@ -36,13 +37,14 @@ public class HttpSolvedAcClient implements SolvedAcClient {
 
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
             if (response.statusCode() != 200) {
-                throw new RuntimeException(ErrorMessage.API_REQUEST_FAILED.getMessage() + response.statusCode());
+                throw new CustomRuntimeException(ErrorMessage.API_REQUEST_FAILED,
+                        String.valueOf(response.statusCode()));
             }
 
             return response.body();
         }
         catch(IOException | InterruptedException e){
-            throw new RuntimeException(ErrorMessage.API_CONNECTION_ERROR.getMessage(), e);
+            throw new CustomRuntimeException(ErrorMessage.API_CONNECTION_ERROR, e);
         }
     }
 }
