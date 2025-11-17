@@ -7,9 +7,10 @@ import lombok.Getter;
 @Getter
 @Builder
 public class Query {
-    private final String BASE_DELIMITER = ",";
-    private final String TIER_FORMAT_REGEX = "^[bsgpdr][1-5]$";
-    private final String TAG_FORMAT_REGEX = "^[a-zA-Z_ ]+$";
+    private static final String BASE_DELIMITER = ",";
+    private static final String TIER_FORMAT_REGEX = "^[bsgpdr][1-5]$";
+    private static final String TAG_FORMAT_REGEX = "^[a-zA-Z_ ]+$";
+    private static final String TIER_ORDER = "bsgpdr";
 
     private final String tag;
     private final String minimumTier;
@@ -44,16 +45,38 @@ public class Query {
 
     private String[] validate() {
         validateTier();
+        validateTierRange();
         return parseAndValidateTags();
     }
 
     private void validateTier() {
-        if (minimumTier != null && !minimumTier.matches(TIER_FORMAT_REGEX)) {
+        if (minimumTier != null && !minimumTier.isBlank() && !minimumTier.matches(TIER_FORMAT_REGEX)) {
             throw new IllegalArgumentException(ErrorMessage.INVALID_TIER_NAME.getMessage());
         }
-        if(maximumTier != null && !maximumTier.matches(TIER_FORMAT_REGEX)){
+        if(maximumTier != null && !maximumTier.isBlank() && !maximumTier.matches(TIER_FORMAT_REGEX)){
             throw new IllegalArgumentException(ErrorMessage.INVALID_TIER_NAME.getMessage());
         }
+    }
+
+    private void validateTierRange() {
+        if ((minimumTier != null && !minimumTier.isBlank()) &&
+                (maximumTier != null && !maximumTier.isBlank())) {
+            int minScore = convertTierToScore(minimumTier);
+            int maxScore = convertTierToScore(maximumTier);
+
+            if (minScore > maxScore) {
+                throw new IllegalArgumentException(ErrorMessage.INVALID_TIER_RANGE.getMessage());
+            }
+        }
+    }
+
+    private int convertTierToScore(String tier){
+        String cleanTier = tier.trim();
+        char rankChar = cleanTier.charAt(0);
+        int level = Character.getNumericValue(cleanTier.charAt(1));
+        int rankIndex = TIER_ORDER.indexOf(rankChar);
+
+        return (rankIndex * 5) + (6 - level);
     }
 
     private String[] parseAndValidateTags() {
@@ -61,7 +84,7 @@ public class Query {
 
         String[] tags = tag.split(BASE_DELIMITER);
         for (String tagValue : tags) {
-            if (tagValue == null || !tagValue.matches(TAG_FORMAT_REGEX)) {
+            if (tagValue == null || tagValue.isBlank() || !tagValue.matches(TAG_FORMAT_REGEX)) {
                 throw new IllegalArgumentException(ErrorMessage.INVALID_TAG_NAME.getMessage());
             }
         }
