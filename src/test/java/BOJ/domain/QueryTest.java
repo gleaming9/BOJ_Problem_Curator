@@ -53,4 +53,17 @@ public class QueryTest {
         assertThatThrownBy(query::toQueryString)
                 .isInstanceOf(IllegalArgumentException.class);
     }
+
+    @DisplayName("최소/최대 티어 형식이 잘못될 경우 예외를 발생한다.")
+    @Test
+    void invalid_tier_range(){
+        Query query = Query.builder()
+                .tag("dp")
+                .minimumTier("p5")
+                .maximumTier("s1")
+                .build();
+
+        assertThatThrownBy(query::toQueryString)
+                .isInstanceOf(IllegalArgumentException.class);
+    }
 }
