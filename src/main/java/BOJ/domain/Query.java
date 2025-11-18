@@ -37,7 +37,7 @@ public class Query {
         if (solvedCount != null) {
             queryBuilder.append("s#").append(solvedCount).append(".. ");
         }
-        if (isKorean == 1) {
+        if (isKorean != null) {
             queryBuilder.append("%ko");
         }
         return queryBuilder.toString();
