@@ -4,6 +4,9 @@ import BOJ.exception.ErrorMessage;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @Builder
 public class Query {
@@ -22,30 +25,43 @@ public class Query {
     public String toQueryString() {
         String[] tags = validate();
 
-        StringBuilder queryBuilder = new StringBuilder();
+        List<String> queryParts = new ArrayList<>();
         for (String tagValue : tags) {
-            queryBuilder.append("tag:").append(tagValue).append(" ");
+            queryParts.add("tag:" + tagValue);
         }
-
-        if (!(minimumTier == null && maximumTier == null)) {
-            queryBuilder.append("*");
-            if(minimumTier != null) queryBuilder.append(minimumTier);
-            queryBuilder.append("..");
-            if(maximumTier != null) queryBuilder.append(maximumTier);
-            queryBuilder.append(" ");
+        String tierQuery = buildTierQuery();
+        if (!tierQuery.isEmpty()) {
+            queryParts.add(tierQuery);
         }
-
         if (solvedCount != null) {
-            queryBuilder.append("s#").append(solvedCount).append(".. ");
+            queryParts.add("s#" + solvedCount + "..");
         }
         if (isKorean != null) {
-            queryBuilder.append("%ko");
+            queryParts.add("%ko");
         }
-        if(userId != null && !userId.isBlank()){
-            queryBuilder.append("-@").append(userId);
+        if (userId != null && !userId.isBlank()){
+            queryParts.add("-@" + userId);
         }
 
-        return queryBuilder.toString();
+        return String.join(" ", queryParts);
+    }
+
+    private String buildTierQuery(){
+        if(!(minimumTier != null && !minimumTier.isBlank())
+        && !(maximumTier != null && !maximumTier.isBlank())){
+            return "";
+        }
+
+        StringBuilder tierQuery = new StringBuilder("*");
+        if(minimumTier != null && !minimumTier.isBlank()){
+            tierQuery.append(minimumTier);
+        }
+        tierQuery.append("..");
+        if(maximumTier != null && !maximumTier.isBlank()){
+            tierQuery.append(maximumTier);
+        }
+
+        return tierQuery.toString();
     }
 
     private String[] validate() {
