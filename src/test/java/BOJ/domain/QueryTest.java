@@ -66,4 +66,16 @@ public class QueryTest {
         assertThatThrownBy(query::toQueryString)
                 .isInstanceOf(IllegalArgumentException.class);
     }
+
+    @DisplayName("사용자 아이디가 주어졌을 때, 올바른 쿼리 문자열을 생성한다.")
+    @Test
+    void toQueryString_with_userId() {
+        Query query = Query.builder()
+                .tag("dp")
+                .userId("gleaming9")
+                .build();
+        String result = query.toQueryString();
+
+        assertThat(result).contains("tag:dp", "-@gleaming9");
+    }
 }
