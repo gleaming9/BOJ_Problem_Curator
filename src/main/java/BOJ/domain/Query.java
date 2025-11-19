@@ -17,6 +17,7 @@ public class Query {
     private final String maximumTier;
     private final Integer solvedCount;
     private final Integer isKorean;
+    private final String userId;
 
     public String toQueryString() {
         String[] tags = validate();
@@ -40,6 +41,10 @@ public class Query {
         if (isKorean != null) {
             queryBuilder.append("%ko");
         }
+        if(userId != null && !userId.isBlank()){
+            queryBuilder.append("-@").append(userId);
+        }
+
         return queryBuilder.toString();
     }
 

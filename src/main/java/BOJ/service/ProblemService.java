@@ -45,6 +45,7 @@ public class ProblemService {
                 .maximumTier(request.getMaxTier())
                 .solvedCount(request.getSolvedCount())
                 .isKorean(request.getIsKorean())
+                .userId(request.getUserId())
                 .build();
     }
 

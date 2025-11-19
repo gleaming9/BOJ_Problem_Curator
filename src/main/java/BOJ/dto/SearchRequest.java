@@ -12,4 +12,5 @@ public class SearchRequest {
     private Integer solvedCount;
     private Integer isKorean;
     private int count = 1;
+    private String userId;
 }
