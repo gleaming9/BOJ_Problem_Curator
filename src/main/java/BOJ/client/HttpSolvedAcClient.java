@@ -3,6 +3,7 @@ package BOJ.client;
 import BOJ.exception.CustomRuntimeException;
 import BOJ.exception.ErrorMessage;
 import BOJ.service.SolvedAcClient;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -16,8 +17,8 @@ import java.time.Duration;
 
 @Component
 public class HttpSolvedAcClient implements SolvedAcClient {
-
-    private static final String BASE_URL = "https://solved.ac/api/v3/search/problem";
+    @Value("${solvedAc.api.url}")
+    private String BASE_URL;
     private static final String SORT = "random";
     private final HttpClient client;
 
