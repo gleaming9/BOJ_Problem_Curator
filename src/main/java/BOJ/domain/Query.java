@@ -47,17 +47,16 @@ public class Query {
     }
 
     private String buildTierQuery(){
-        if(!(minimumTier != null && !minimumTier.isBlank())
-        && !(maximumTier != null && !maximumTier.isBlank())){
+        if(!hasText(minimumTier) && !(hasText(maximumTier))){
             return "";
         }
 
         StringBuilder tierQuery = new StringBuilder("*");
-        if(minimumTier != null && !minimumTier.isBlank()){
+        if(hasText(minimumTier)){
             tierQuery.append(minimumTier);
         }
         tierQuery.append("..");
-        if(maximumTier != null && !maximumTier.isBlank()){
+        if(hasText(maximumTier)){
             tierQuery.append(maximumTier);
         }
 
@@ -71,17 +70,16 @@ public class Query {
     }
 
     private void validateTier() {
-        if (minimumTier != null && !minimumTier.isBlank() && !minimumTier.matches(TIER_FORMAT_REGEX)) {
+        if (hasText(minimumTier) && !minimumTier.matches(TIER_FORMAT_REGEX)) {
             throw new IllegalArgumentException(ErrorMessage.INVALID_TIER_NAME.getMessage());
         }
-        if(maximumTier != null && !maximumTier.isBlank() && !maximumTier.matches(TIER_FORMAT_REGEX)){
+        if(hasText(maximumTier) && !maximumTier.matches(TIER_FORMAT_REGEX)){
             throw new IllegalArgumentException(ErrorMessage.INVALID_TIER_NAME.getMessage());
         }
     }
 
     private void validateTierRange() {
-        if ((minimumTier != null && !minimumTier.isBlank()) &&
-                (maximumTier != null && !maximumTier.isBlank())) {
+        if (hasText(minimumTier) && hasText(maximumTier)) {
             int minScore = convertTierToScore(minimumTier);
             int maxScore = convertTierToScore(maximumTier);
 
@@ -101,14 +99,18 @@ public class Query {
     }
 
     private String[] parseAndValidateTags() {
-        if (tag == null || tag.isBlank()) return new String[0];
+        if (!hasText(tag)) return new String[0];
 
         String[] tags = tag.split(BASE_DELIMITER);
         for (String tagValue : tags) {
-            if (tagValue == null || tagValue.isBlank() || !tagValue.matches(TAG_FORMAT_REGEX)) {
+            if (!hasText(tagValue) || !tagValue.matches(TAG_FORMAT_REGEX)) {
                 throw new IllegalArgumentException(ErrorMessage.INVALID_TAG_NAME.getMessage());
             }
         }
         return tags;
+    }
+
+    private Boolean hasText(String value){
+        return value != null && !value.isBlank();
     }
 }
