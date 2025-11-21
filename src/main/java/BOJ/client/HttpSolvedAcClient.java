@@ -12,6 +12,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 
 @Component
 public class HttpSolvedAcClient implements SolvedAcClient {
@@ -21,7 +22,9 @@ public class HttpSolvedAcClient implements SolvedAcClient {
     private final HttpClient client;
 
     public HttpSolvedAcClient(){
-        this.client = HttpClient.newHttpClient();
+        this.client = HttpClient.newBuilder()
+                .connectTimeout(Duration.ofSeconds(5))
+                .build();
     }
 
     public String searchProblem(String queryString){
@@ -32,6 +35,7 @@ public class HttpSolvedAcClient implements SolvedAcClient {
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(fullUri))
                     .header("Accept", "application/json")
+                    .timeout(Duration.ofSeconds(10))
                     .GET()
                     .build();
 
@@ -43,7 +47,11 @@ public class HttpSolvedAcClient implements SolvedAcClient {
 
             return response.body();
         }
-        catch(IOException | InterruptedException e){
+        catch(InterruptedException e){
+            Thread.currentThread().interrupt();
+            throw new CustomRuntimeException(ErrorMessage.API_CONNECTION_ERROR, e);
+        }
+        catch(IOException e){
             throw new CustomRuntimeException(ErrorMessage.API_CONNECTION_ERROR, e);
         }
     }
