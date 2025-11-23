@@ -31,31 +31,31 @@ public class ApplicationTest {
     @Test
     void search_whole_process_success() throws Exception {
         String fakeApiResponse = """
-            {
-                "count": 2,
-                "items": [
                     {
-                        "problemId": 2747,
-                        "titleKo": "피보나치 수",
-                        "level": 4,
-                        "acceptedUserCount": 36496,
-                        "tags": [
-                            { "key": "math" },
-                            { "key": "implementation" }
-                        ]
-                    },
-                    {
-                        "problemId": 2839,
-                        "titleKo": "설탕 배달",
-                        "level": 7,
-                        "acceptedUserCount": 112542,
-                        "tags": [
-                            { "key": "dp" }
+                        "count": 2,
+                        "items": [
+                            {
+                                "problemId": 2747,
+                                "titleKo": "피보나치 수",
+                                "level": 4,
+                                "acceptedUserCount": 36496,
+                                "tags": [
+                                    { "key": "math" },
+                                    { "key": "implementation" }
+                                ]
+                            },
+                            {
+                                "problemId": 2839,
+                                "titleKo": "설탕 배달",
+                                "level": 7,
+                                "acceptedUserCount": 112542,
+                                "tags": [
+                                    { "key": "dp" }
+                                ]
+                            }
                         ]
                     }
-                ]
-            }
-        """;
+                """;
 
         given(solvedAcClient.searchProblem(anyString()))
                 .willReturn(fakeApiResponse);
@@ -63,7 +63,7 @@ public class ApplicationTest {
         // GET /api/search?tag=dp&count=2
         mockMvc.perform(get("/api/search")
                         .param("tag", "dp")
-                        .param("count", "2") // 2개를 요청
+                        .param("count", "2")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
 

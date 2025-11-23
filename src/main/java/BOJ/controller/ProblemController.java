@@ -18,7 +18,7 @@ public class ProblemController {
     }
 
     @GetMapping("api/search")
-    public ResponseEntity<List<Problem>> searchProblems(SearchRequest request){
+    public ResponseEntity<List<Problem>> searchProblems(SearchRequest request) {
         List<Problem> problems = problemService.search(request);
         return ResponseEntity.ok(problems);
     }

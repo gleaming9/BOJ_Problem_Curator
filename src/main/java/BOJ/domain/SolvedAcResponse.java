@@ -12,7 +12,6 @@ import java.util.List;
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SolvedAcResponse {
-
     @JsonProperty("count")
     private int count;
 

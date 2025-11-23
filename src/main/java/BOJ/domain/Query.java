@@ -39,24 +39,24 @@ public class Query {
         if (isKorean != null) {
             queryParts.add("%ko");
         }
-        if (userId != null && !userId.isBlank()){
+        if (userId != null && !userId.isBlank()) {
             queryParts.add("-@" + userId);
         }
 
         return String.join(" ", queryParts);
     }
 
-    private String buildTierQuery(){
-        if(!hasText(minimumTier) && !(hasText(maximumTier))){
+    private String buildTierQuery() {
+        if (!hasText(minimumTier) && !(hasText(maximumTier))) {
             return "";
         }
 
         StringBuilder tierQuery = new StringBuilder("*");
-        if(hasText(minimumTier)){
+        if (hasText(minimumTier)) {
             tierQuery.append(minimumTier);
         }
         tierQuery.append("..");
-        if(hasText(maximumTier)){
+        if (hasText(maximumTier)) {
             tierQuery.append(maximumTier);
         }
 
@@ -73,7 +73,7 @@ public class Query {
         if (hasText(minimumTier) && !minimumTier.matches(TIER_FORMAT_REGEX)) {
             throw new IllegalArgumentException(ErrorMessage.INVALID_TIER_NAME.getMessage());
         }
-        if(hasText(maximumTier) && !maximumTier.matches(TIER_FORMAT_REGEX)){
+        if (hasText(maximumTier) && !maximumTier.matches(TIER_FORMAT_REGEX)) {
             throw new IllegalArgumentException(ErrorMessage.INVALID_TIER_NAME.getMessage());
         }
     }
@@ -89,7 +89,7 @@ public class Query {
         }
     }
 
-    private int convertTierToScore(String tier){
+    private int convertTierToScore(String tier) {
         String cleanTier = tier.trim();
         char rankChar = cleanTier.charAt(0);
         int level = Character.getNumericValue(cleanTier.charAt(1));
@@ -110,7 +110,7 @@ public class Query {
         return tags;
     }
 
-    private Boolean hasText(String value){
+    private Boolean hasText(String value) {
         return value != null && !value.isBlank();
     }
 }

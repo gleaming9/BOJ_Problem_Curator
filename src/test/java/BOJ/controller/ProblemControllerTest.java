@@ -42,9 +42,9 @@ public class ProblemControllerTest {
                 .thenThrow(new IllegalArgumentException(errorMessage));
 
         mockMvc.perform(get("/api/search")
-                    .param("tag", "dp")
-                    .param("minTier","g1")
-                    .param("maxTier","11p")) // 잘못된 입력
+                        .param("tag", "dp")
+                        .param("minTier", "g1")
+                        .param("maxTier", "11p")) // 잘못된 입력
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string(ErrorMessage.INVALID_TIER_NAME.getMessage()));
     }

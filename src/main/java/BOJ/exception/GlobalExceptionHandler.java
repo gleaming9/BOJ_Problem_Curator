@@ -6,16 +6,15 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-
     @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<String> handleIllegalArgument(IllegalArgumentException e){
+    public ResponseEntity<String> handleIllegalArgument(IllegalArgumentException e) {
         return ResponseEntity
                 .badRequest()
                 .body(e.getMessage());
     }
 
     @ExceptionHandler(CustomRuntimeException.class)
-    public ResponseEntity<String> handleCustomRuntime(RuntimeException e){
+    public ResponseEntity<String> handleCustomRuntime(RuntimeException e) {
         return ResponseEntity
                 .internalServerError()
                 .body(e.getMessage());

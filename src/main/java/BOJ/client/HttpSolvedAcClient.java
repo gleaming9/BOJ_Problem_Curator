@@ -22,25 +22,25 @@ public class HttpSolvedAcClient implements SolvedAcClient {
     private static final String SORT = "random";
     private final HttpClient client;
 
-    public HttpSolvedAcClient(){
+    public HttpSolvedAcClient() {
         this.client = HttpClient.newBuilder()
                 .connectTimeout(Duration.ofSeconds(5))
                 .build();
     }
 
-    public String searchProblem(String queryString){
+    public String searchProblem(String queryString) {
         URI requestUri = createRequestUri(queryString);
         HttpRequest request = createHttpRequest(requestUri);
         return sendRequest(request);
     }
 
-    private URI createRequestUri(String queryString){
+    private URI createRequestUri(String queryString) {
         String encodedQuery = URLEncoder.encode(queryString, StandardCharsets.UTF_8);
         String fullUri = BASE_URL + "?query=" + encodedQuery + "&sort=" + SORT;
         return URI.create(fullUri);
     }
 
-    private HttpRequest createHttpRequest(URI uri){
+    private HttpRequest createHttpRequest(URI uri) {
         return HttpRequest.newBuilder()
                 .uri(uri)
                 .header("Accept", "application/json")
@@ -49,22 +49,20 @@ public class HttpSolvedAcClient implements SolvedAcClient {
                 .build();
     }
 
-    private String sendRequest(HttpRequest request){
+    private String sendRequest(HttpRequest request) {
         try {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
             validateResponse(response);
             return response.body();
-        }
-        catch(InterruptedException e){
+        } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
             throw new CustomRuntimeException(ErrorMessage.API_CONNECTION_ERROR, e);
-        }
-        catch(IOException e){
+        } catch (IOException e) {
             throw new CustomRuntimeException(ErrorMessage.API_CONNECTION_ERROR, e);
         }
     }
 
-    private void validateResponse(HttpResponse<String> response){
+    private void validateResponse(HttpResponse<String> response) {
         if (response.statusCode() != 200) {
             throw new CustomRuntimeException(ErrorMessage.API_REQUEST_FAILED,
                     String.valueOf(response.statusCode()));

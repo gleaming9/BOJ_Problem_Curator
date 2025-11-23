@@ -11,7 +11,6 @@ import lombok.ToString;
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Tag {
-
     @JsonProperty("key")
     private String key;
 }

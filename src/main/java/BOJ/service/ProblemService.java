@@ -16,7 +16,6 @@ import java.util.stream.Collectors;
 
 @Service
 public class ProblemService {
-
     private final SolvedAcClient solvedAcClient;
     private final ObjectMapper objectMapper;
 
@@ -26,7 +25,7 @@ public class ProblemService {
         this.objectMapper = new ObjectMapper();
     }
 
-    public List<Problem> search(SearchRequest request){
+    public List<Problem> search(SearchRequest request) {
         Query query = createQuery(request);
 
         String queryString = query.toQueryString();
@@ -38,7 +37,7 @@ public class ProblemService {
                 .collect(Collectors.toList());
     }
 
-    private Query createQuery(SearchRequest request){
+    private Query createQuery(SearchRequest request) {
         return Query.builder()
                 .tag(request.getTag())
                 .minimumTier(request.getMinTier())
@@ -49,12 +48,11 @@ public class ProblemService {
                 .build();
     }
 
-    private List<Problem> parseResponse(String json){
-        try{
+    private List<Problem> parseResponse(String json) {
+        try {
             SolvedAcResponse response = objectMapper.readValue(json, SolvedAcResponse.class);
             return response.getItems();
-        }
-        catch(JsonProcessingException e){
+        } catch (JsonProcessingException e) {
             throw new CustomRuntimeException(ErrorMessage.JSON_PARSING_FAILED, e);
         }
     }

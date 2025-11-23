@@ -13,7 +13,6 @@ import java.util.List;
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Problem {
-
     private static final String BOJ_URL = "https://www.acmicpc.net/problem/";
 
     @JsonProperty("problemId")
@@ -31,7 +30,7 @@ public class Problem {
     @JsonProperty("acceptedUserCount")
     private int solvedCount;
 
-    public String getTierName(){
+    public String getTierName() {
         if (level == 0) return "Unrated";
 
         String[] ranks = {"Bronze", "Silver", "Gold", "Platinum", "Diamond", "Ruby"};
@@ -43,7 +42,7 @@ public class Problem {
         return ranks[rankIndex] + " " + rankLevel;
     }
 
-    public String getUrl(){
+    public String getUrl() {
         return BOJ_URL + id;
     }
 }

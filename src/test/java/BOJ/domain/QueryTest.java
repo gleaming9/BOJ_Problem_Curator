@@ -9,7 +9,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class QueryTest {
-
     @DisplayName("모든 조건이 주어졌을 때, 올바른 쿼리 문자열을 생성한다.")
     @Test
     void toQueryString_all_fields() {
@@ -56,7 +55,7 @@ public class QueryTest {
 
     @DisplayName("최소/최대 티어 형식이 잘못될 경우 예외를 발생한다.")
     @Test
-    void invalid_tier_range(){
+    void invalid_tier_range() {
         Query query = Query.builder()
                 .tag("dp")
                 .minimumTier("p5")
